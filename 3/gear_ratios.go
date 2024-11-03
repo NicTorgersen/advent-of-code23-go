@@ -28,8 +28,8 @@ type Symbol struct {
 
 func (symbol Symbol) HasCollidedWith(number Number) bool {
 	return (symbol.y-1 == number.y || symbol.y == number.y || symbol.y+1 == number.y) && // under / over / same line constraint
-		(symbol.x-1 <= number.x+number.width && symbol.x+1 >= number.x ||
-			symbol.x-1 <= number.x && symbol.x+1 >= number.x+number.width)
+		(symbol.x-1 <= number.x+number.width && symbol.x+1 >= number.x || // checks collision on x overlap (end of number -> start of next number)
+			symbol.x-1 <= number.x && symbol.x+1 >= number.x+number.width) // checks collision on x overlap (start of number -> end of next number)
 }
 
 func (symbol Symbol) String() string {
