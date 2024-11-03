@@ -52,6 +52,7 @@ func main() {
 
 	scanner := bufio.NewScanner(file)
 
+	// TODO: utilize goroutines and channels to make it Go
 	for y := 0; scanner.Scan(); y++ {
 		numbersInLine, symbolsInLine := ParseLine(scanner.Text(), y)
 
@@ -60,13 +61,13 @@ func main() {
 	}
 
 	var relevantNumbers = map[int]Number{}
+	sum := 0
 
 	for _, number := range numbers {
-		log.Println(number)
+		log.Println(number.value)
 	}
 
 	for _, symbol := range symbols {
-		log.Println(symbol)
 		for _, number := range numbers {
 			if symbol.HasCollidedWith(number) {
 				relevantNumbers[number.value] = number
@@ -76,8 +77,10 @@ func main() {
 	}
 
 	for _, number := range relevantNumbers {
-		log.Println(number.value)
+		sum += number.value
 	}
+
+	log.Printf("Sum by collisions: %d", sum)
 }
 
 func ParseLine(line string, y int) ([]Number, []Symbol) {
@@ -88,9 +91,11 @@ func ParseLine(line string, y int) ([]Number, []Symbol) {
 
 	for i := 0; i < len(lineAsRunes); i++ {
 		if unicode.IsDigit(lineAsRunes[i]) {
-			// increase buffer because it's a number
 			buffer += string(lineAsRunes[i])
-			continue
+
+			if len(line) > i+1 {
+				continue
+			}
 		}
 
 		if len(buffer) > 0 {
