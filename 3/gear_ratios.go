@@ -63,10 +63,6 @@ func main() {
 	var relevantNumbers = map[int]Number{}
 	sum := 0
 
-	for _, number := range numbers {
-		log.Println(number.value)
-	}
-
 	for _, symbol := range symbols {
 		for _, number := range numbers {
 			if symbol.HasCollidedWith(number) {
@@ -77,6 +73,7 @@ func main() {
 	}
 
 	for _, number := range relevantNumbers {
+		log.Printf("Collided with: %d", number.value)
 		sum += number.value
 	}
 
